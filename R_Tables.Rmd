@@ -77,19 +77,19 @@ sw_table %>%
   opt_all_caps() %>% 
   # Change font to Franklin Demi 
   opt_table_font(font = list(
-    google_font("Franklin Demi"), # Was Chivo, changed to Franklin Demi 
+    google_font("Franklin Demi"), 
     default_fonts())) %>%
   # Set the alignment 
   cols_align(align = "center",
              columns = c(1, 3:10)) %>%
-  # set the column widths
+  # Set the column widths
   cols_width(columns = 1 ~ px(65),
              columns = 2 ~ px(135),
              columns = 3:10 ~ px(88)) %>%
-  # rename n_films and img_paths columns
+  # Rename n_films and img_paths columns
   cols_label(n_films = "Number of Films",
              img_paths = "") %>% 
-  # color the Number of Films column
+  # Color the Number of Films column
   data_color(columns = c(n_films),
              colors = pct_pal) %>%
   # Make the check marks bold
