@@ -43,19 +43,19 @@ sw_table <- starwars %>%
 # Create a vector of image paths for character icons 
 # Icons from https://symbolicons.com/free
 img_paths <- c(
-  "/gt Starwars Icons/r2d2.png", 
-  "/gt Starwars Icons/c3p0.png",
-  "/gt Starwars Icons/obiwan-kenobi.png",
-  "/gt Starwars Icons/luke-skywalker.png",
-  "/gt Starwars Icons/princess-leia.png",
-  "/gt Starwars Icons/chewbacca.png", 
-  "/gt Starwars Icons/yoda.png",
-  "/gt Starwars Icons/emperor-palpatine.png",
-  "/gt Starwars Icons/darth-vader.png",
-  "/gt Starwars Icons/han-solo.png"
+  "r2d2.png", 
+  "c3p0.png",
+  "obiwan-kenobi.png",
+  "luke-skywalker.png",
+  "princess-leia.png",
+  "chewbacca.png", 
+  "yoda.png",
+  "emperor-palpatine.png",
+  "darth-vader.png",
+  "han-solo.png"
   )
 
-img_paths <-paste0("/Users/edenaxelrad/Desktop/FOLDERS/R Files/R Tables", img_paths)
+img_paths <- paste0("/gt Starwars Icons/", img_paths)
 
 
 # Add image paths as first column in the Starwars data frame 
@@ -129,11 +129,11 @@ sw_table %>%
   # Add images using text_transform and local_image function
   text_transform(
     locations = cells_body(columns = img_paths),
-    fn = function(x) {
-      local_image(
-        filename = img_paths,
-        height = 25)
-        }) %>%
+      fn = function(x) {
+       local_image(
+          filename = img_paths,
+          height = 25)
+          }) %>%
   # Add a source/credit
   tab_source_note(
     source_note = md("Table by [Eden Axelrad](https://github.com/edenaxe) 
