@@ -117,7 +117,11 @@ sw_table %>%
     fn = function(x) {
       local_image(
         filename = img_paths,
-        height = 25)}) 
+        height = 25)}) %>%
+  # Add a source/credit
+  tab_source_note(
+    source_note = md("Table by [Eden Axelrad](https://github.com/edenaxe) 
+                     with icons from [symbolicons](https://symbolicons.com/free)"))
 
 ```
 
