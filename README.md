@@ -1,2 +1,2 @@
-# Setting_the_Table
+# Setting the Table
 Table templates and examples
