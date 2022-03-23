@@ -10,8 +10,14 @@ output:
 ```{r setup, include=FALSE}
 
 # Load required packages
-library(gt)
 library(tidyverse)
+
+library(gt)
+
+library(rvest)
+library(xml2)
+library(formattable)
+library(sparkline)
 
 ```
 
@@ -147,7 +153,76 @@ sw_table %>%
 
 ```{r formattable}
 
+# This website shows screen time breakdown for starwars films
+web <- 'https://www.imdb.com/list/ls027631145/'
+website <- read_html(web)
 
+# Retrieve the titles of movies listed on the website
+title_data_html <- html_nodes(website,'.lister-item-header a')
+title_data <- html_text(title_data_html)
+
+# Retrieve the screen time data by character
+table_data_html <- html_nodes(website,'.list-description p')
+table_data <- html_text(table_data_html)
+table_data <- table_data[2:12]
+
+# Combine with the film title 
+sw_table <- cbind.data.frame(title_data, table_data)
+
+
+screen_time <- function(st, title) {
+  
+  # Clean up the string by 
+  st <- as.list(strsplit(st, ">")[[1]]) %>%
+    gsub(pattern = "\n", replacement = "") %>%
+    as.data.frame() %>%
+    # Separate the string in to 3 portions (character, hours, minutes) using "<" and ":" as separators 
+    mutate(seperated = str_split_fixed(., ' <|:', 3)) 
+  
+  # Pull out the separated data frame (not sure why this happens)
+  st <- st$seperated %>%
+    as.data.frame()  
+  
+  # Make the hours and minutes columns numeric and replace blanks with zeros
+  st[2:3] <- sapply(st[2:3], as.numeric)
+  st[is.na(st)] <- 0
+  
+  # Create a new column for total minutes and add a column for the film title
+  st <- st %>% 
+    mutate(total_mins = as.numeric(V2)+as.numeric(V3)/60) %>%
+    select("name" = V1, total_mins) %>%
+    mutate(film = title)
+  
+}
+
+
+# Use the above function to sum screen time, clean, and append all films
+all_films <- map2(.f = screen_time, 
+                  .x = sw_table$table_data, 
+                  .y = sw_table$title_data) %>%
+  # Bind rows to combine all characters and films into one data frame
+  bind_rows() %>%
+  # Use pivot wider to show films as columns and total screen time per film as the value
+  pivot_wider(names_from = film, values_from = total_mins, values_fill = 0) %>%
+  # Add a column that shows total screen time across all films
+  rowwise() %>%
+  mutate(`Total Screen Time` = sum(c_across(`Star Wars: Episode I - The Phantom Menace`:`Solo: A Star Wars Story`))) %>%
+  # Filter to characters with more than 30 minutes of screen time and arrange in descending order
+  filter(`Total Screen Time` > 30) %>%
+  arrange(desc(`Total Screen Time`))
+
+
+
+
+# Create the trendline column using sparkline package
+all_films$`Line Chart` <- apply(all_films[,2:12], 1, FUN = function(x) spk_chr(as.numeric(x), type = "line"))
+
+
+as.htmlwidget(
+  formattable(all_films,
+              list(`name` = formatter("span", 
+                                        style = ~ formattable::style(font.weight = "bold")))))  %>%
+  spk_add_deps()
 
 ```
 
