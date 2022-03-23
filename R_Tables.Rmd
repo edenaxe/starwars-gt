@@ -172,26 +172,23 @@ sw_table <- cbind.data.frame(title_data, table_data)
 
 screen_time <- function(st, title) {
   
-  # Clean up the string by 
-  st <- as.list(strsplit(st, ">")[[1]]) %>%
-    gsub(pattern = "\n", replacement = "") %>%
-    as.data.frame() %>%
-    # Separate the string in to 3 portions (character, hours, minutes) using "<" and ":" as separators 
-    mutate(seperated = str_split_fixed(., ' <|:', 3)) 
-  
-  # Pull out the separated data frame (not sure why this happens)
-  st <- st$seperated %>%
-    as.data.frame()  
-  
-  # Make the hours and minutes columns numeric and replace blanks with zeros
-  st[2:3] <- sapply(st[2:3], as.numeric)
-  st[is.na(st)] <- 0
-  
-  # Create a new column for total minutes and add a column for the film title
-  st <- st %>% 
-    mutate(total_mins = as.numeric(V2)+as.numeric(V3)/60) %>%
-    select("name" = V1, total_mins) %>%
-    mutate(film = title)
+# Clean up the table data concatenated string
+# Split the string at ">" so each character is an item in a vector list
+st <- as.list(strsplit(st, ">")[[1]]) %>%
+  # Remove unused html "\n" 
+  gsub(pattern = "\n", replacement = "") %>%
+  as.data.frame() %>%
+  # Separate the string in to 3 portions (name, minutes, seconds) using "<" and ":" as separators 
+  mutate(seperated = str_split_fixed(., ' <|:', 3)) %>%
+  do.call(data.frame, .) %>%
+  select("name" = seperated.1, "minutes" = seperated.2, "seconds" = seperated.3) %>%
+  # Convert minutes and seconds to numeric and replace NAd with 0s 
+  mutate_at(.vars = c("minutes", "seconds"), .funs = as.numeric) %>%
+  replace_na(list(minutes = 0, seconds = 0)) %>%
+  # Create a column that shows total minutes
+  mutate(total_mins = minutes + seconds/60) %>%
+  select(name, total_mins) %>%
+  mutate(film = title)
   
 }
 
