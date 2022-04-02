@@ -180,9 +180,10 @@ st <- as.list(strsplit(st, ">")[[1]]) %>%
   as.data.frame() %>%
   # Separate the string in to 3 portions (name, minutes, seconds) using "<" and ":" as separators 
   mutate(seperated = str_split_fixed(., ' <|:', 3)) %>%
+  # Convert/keep data as a data frame and select and rename desired columns (name, minutes, seconds)
   do.call(data.frame, .) %>%
   select("name" = seperated.1, "minutes" = seperated.2, "seconds" = seperated.3) %>%
-  # Convert minutes and seconds to numeric and replace NAd with 0s 
+  # Convert minutes and seconds to numeric and replace NAs with 0s 
   mutate_at(.vars = c("minutes", "seconds"), .funs = as.numeric) %>%
   replace_na(list(minutes = 0, seconds = 0)) %>%
   # Create a column that shows total minutes
