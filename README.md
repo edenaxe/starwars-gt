@@ -15,7 +15,7 @@ In this example I use the `dplyr` starwars characters tibble to generate a `gt` 
 <br>
   
 *Figure 2. gt table without formatting*  
-<img src="Images/basic_gt.PNG" width="80%" height="80%">
+<img src="Images/basic_gt.png" width="80%" height="80%">
 
 <br>
 
