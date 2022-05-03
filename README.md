@@ -145,10 +145,3 @@ sw_table %>%
 <img src="Images/starwars_gt.png" width="80%" height="80%">
 
 <br>
-
- 
-## Formattable + Sparklines
-
-Use `formattable` and `sparklines` to create a table with images and icons. 
- 
-<br>
