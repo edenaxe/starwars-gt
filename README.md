@@ -32,7 +32,7 @@ sw_table <- starwars %>%
 ```
   
 *Figure 2. gt table without formatting*  
-<img src="Images/basic_gt.png" width="80%" height="80%">
+<img src="Images/basic_gt.png" width="100%" height="100%">
 
 <br>
 
@@ -139,6 +139,6 @@ sw_table %>%
 ```
 
 *Figure 3. Final gt table*  
-<img src="Images/starwars_gt.png" width="80%" height="80%">
+<img src="Images/starwars_gt.png" width="100%" height="100%">
 
 <br>
