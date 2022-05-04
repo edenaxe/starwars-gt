@@ -1,13 +1,13 @@
 # Star Wars gt Table -----------------------------------------------------------
 
-## Setup -----------------------------------------------------------------------
+## 1. Setup -----------------------------------------------------------------------
 
-### 1. Load required packages --------------------------------------------------
+### a. Load required packages --------------------------------------------------
 library(tidyverse)
 library(gt)
 
 
-### 2. Setting up the data -----------------------------------------------------
+### b. Setting up the data -----------------------------------------------------
 sw_table <- starwars %>%
   # Add column that counts number of films per character 
   mutate(n_films = map_int(films, length)) %>%
@@ -25,7 +25,7 @@ sw_table <- starwars %>%
          `Return of the Jedi`, `The Force Awakens`) 
 
 
-### 3. Additional aesthetics ---------------------------------------------------
+### c. Additional aesthetics ---------------------------------------------------
 # Create a vector of image paths for character icons 
 # Icons from https://symbolicons.com/free
 img_paths <- c(
@@ -55,7 +55,7 @@ pct_pal <- scales::col_numeric(c("#e8cfe1", "#a374c4"),
 check <- "<span style=\"color:#a374c4\">&#10004;</span>"
 
 
-## Generate the gt table -------------------------------------------------------
+## 2. Generate the gt table -------------------------------------------------------
 sw_table %>% 
   gt() %>%
   # All caps on column headers
