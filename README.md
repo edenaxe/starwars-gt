@@ -23,7 +23,7 @@ sw_table <- starwars %>%
   # Use unnest on films columns and add a count column to later be converted to a check mark
   unnest(films) %>%
   mutate(count = 1) %>%
-  # Use pivot wider to show characters as the ID column, number of films,and all 7 films 
+  # Use pivot wider to show characters as the ID column, number of films, and all 7 films 
   pivot_wider(names_from = films, values_from = count, values_fill = 0) %>%
   # Select only relevant columns and order the 7 films correctly (Episode I to VII)
   select(name, n_films, `The Phantom Menace`, `Attack of the Clones`, `Revenge of the Sith`, 
